@@ -10,13 +10,13 @@ import numpy as np
 
 T = 10
 tstep = 1e-2
-tnum = int(T/tstep)
+tnum = int(1+T/tstep)
 t = np.linspace(0, T, tnum)
 
 delta = 5e-1
 X = 2
 xstep = 1e-2
-xnum = int(2*X/xstep)
+xnum = int(1+2*X/xstep)
 x = np.linspace(-X, X, xnum)
 
 Y = X
@@ -31,8 +31,14 @@ solid = (np.abs(xx)==2) & (yy<=0)
 solid = solid | ((np.abs(xx) > d) & (yy==0))
 solid = solid | (y==-2)
 
-openbound = (np.abs(xx)==2) & (yy>0)
-openbound = openbound | (yy==2)
+openbound_left = (xx==-X) & ((yy>0) & (yy != Y))
+openbound_right = (xx==X) & (yy>0) & (yy != Y)
+openbound_up = (yy==2)
+openbound = openbound_left | openbound_right | openbound_up
+oplr = openbound_left[:, 0]
+oplr_ = (yy>=0)
+oplr_ = oplr_[:,0]
+
 bound = solid | openbound
 interior = ~ bound
 outbound = (np.abs(xx)==X) | (np.abs(yy)==Y)
@@ -61,12 +67,29 @@ for i in range(2, tnum):
     uy_diff = np.empty((xnum, ynum))
     ux_diff[1:-1, :] = np.diff(u_last1, n=2, axis=0)
     uy_diff[:, 1:-1] = np.diff(u_last1, n=2, axis=1)
-    u[i, interior] = ((tstep**2)*(ux_diff[interior]/xstep**2 + uy_diff[interior]/ystep**2) \
+    u[i, interior] = (tstep**2)*(ux_diff[interior]/xstep**2 + uy_diff[interior]/ystep**2) \
                       + 2*u_last1[interior] - u_last2[interior]
+    
+    ## boundary
+    u[i, solid] = 0
+    
+    tmp1 = (u[i, 1, oplr] - u_last1[1, oplr] + u_last1[0, oplr])/(xstep*tstep)
+    tmp2 = (2*u_last1[0, oplr] - u_last2[0, oplr])/(tstep**2)
+    tmp3 = np.diff(u[i, 0, oplr_], n=2)/(2*ystep**2)
+    u[i, 0, oplr] = (tmp1+ tmp2 + tmp3)/(1/tstep**2 + 1/(xstep*tstep))
+    
+    tmp1 = (u[i, -2, oplr] + u_last1[-1, oplr] - u_last1[-2, oplr])/(tstep*xstep)
+    tmp2 = (2*u_last1[-1, oplr]-u_last2[-1, oplr])/(tstep**2)
+    tmp3 = np.diff(u[i, -1, oplr_], n=2)/(2*ystep**2)
+    u[i, -1, oplr] = (tmp1+ tmp2 + tmp3)/(1/tstep**2 + 1/(xstep*tstep))
+    
+    tmp1 = (u[i, 1:-1, -2] + u_last1[1:-1, -1] - u_last1[1:-1, -2])/(tstep*ystep)
+    tmp2 = (2*u_last1[1:-1, -1] - u_last2[1:-1, -1])/(tstep**2)
+    tmp3 = np.diff(u_last1[:, -1], n=2)/(xstep**2)
+    u[i, 1:-1, -1] = (tmp1+tmp2+tmp3)/(1/tstep**2+1/(ystep*tstep))
 
-
-
-
+    u[i, 0, -1] = 0
+    u[i, -1, -1] = 0
 
 
 
