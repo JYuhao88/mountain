@@ -43,12 +43,12 @@ for i in range(2, tnum):
     
     ## boundary
     ## a
-    u[i, 0] = (c*u[i, 1]/xstep + u_last1[0]/tstep)/(c/xstep + 1/tstep)
-    u[i, -1] =  (c*u[i, -2]/xstep + u_last1[-1]/tstep)/(c/xstep + 1/tstep)
+    # u[i, 0] = (c*u[i, 1]/xstep + u_last1[0]/tstep)/(c/xstep + 1/tstep)
+    # u[i, -1] =  (c*u[i, -2]/xstep + u_last1[-1]/tstep)/(c/xstep + 1/tstep)
     
-    # b
-    # u[i, 0] = 0
-    # u[i, -1] = 0
+    ## b
+    u[i, 0] = 0
+    u[i, -1] = 0
 
 ## plot
 import numpy as np

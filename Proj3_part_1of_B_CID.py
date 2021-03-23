@@ -8,7 +8,7 @@ Created on Mon Mar 22 08:53:43 2021
 
 import numpy as np
 
-T = 5
+T = 10
 tstep = 5e-3
 tnum = int(1+T/tstep)
 t = np.linspace(0, T, tnum)
