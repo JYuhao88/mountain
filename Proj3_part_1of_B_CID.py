@@ -8,14 +8,14 @@ Created on Mon Mar 22 08:53:43 2021
 
 import numpy as np
 
-T = 10
-tstep = 1e-3
+T = 5
+tstep = 5e-3
 tnum = int(1+T/tstep)
 t = np.linspace(0, T, tnum)
 
 delta = 5e-1
 X = 2
-xstep = 1e-1
+xstep = 1e-2
 xnum = int(1+2*X/xstep)
 x = np.linspace(-X, X, xnum)
 
@@ -24,7 +24,7 @@ ystep = xstep
 ynum = xnum
 y = x
 
-xx, yy = np.meshgrid(x, y, indexing='xy')
+xx, yy = np.meshgrid(x, y, indexing='ij')
 d = 1/2
 epsilon = 1e-8
 solid = (np.abs(xx)==2) & (yy<=0)
@@ -35,9 +35,9 @@ openbound_left = (xx==-X) & ((yy>0) & (yy != Y))
 openbound_right = (xx==X) & (yy>0) & (yy != Y)
 openbound_up = (yy==2)
 openbound = openbound_left | openbound_right | openbound_up
-oplr = openbound_left[:, 0]
+oplr = openbound_left[0, :]
 oplr_ = (yy>=0)
-oplr_ = oplr_[:,0]
+oplr_ = oplr_[0, :]
 
 bound = solid | openbound
 interior = ~ bound
@@ -91,18 +91,20 @@ for i in range(2, tnum):
     tmp3 = np.diff(u_last1[:, -1], n=2)/(xstep**2)
     u[i, 1:-1, -1] = (tmp1+tmp2+tmp3)/(1/(tstep**2)+1/(ystep*tstep))
 
-    ## x = -2   y = 2
-    tmp1 = (u[i, 1, -1] - u_last1[1, -1] + u_last1[0, -1])/xstep
-    tmp2 = (u[i, 0, -2] + u_last1[0, -1] - u_last1[0, -2])/ystep
-    tmp3 = -3/2*(u[i, 0, -1] - 2*u_last1[0, -1] + u_last2[0, -1])/tstep
-    u[i, 0, -1] = (tmp1 + tmp2 + tmp3)/(1/xstep + 1/ystep)
+    # ## x = -2   y = 2
+    # tmp1 = (u[i, 1, -1] - u_last1[1, -1] + u_last1[0, -1])/xstep
+    # tmp2 = (u[i, 0, -2] + u_last1[0, -1] - u_last1[0, -2])/ystep
+    # tmp3 = -3/2*(u[i, 0, -1] - 2*u_last1[0, -1] + u_last2[0, -1])/tstep
+    # u[i, 0, -1] = (tmp1 + tmp2 + tmp3)/(1/xstep + 1/ystep)
 
-    ## x = 2   y = 2
-    tmp1 = (u[i, -2, -1] - u_last1[-2, -1] + u_last1[-1, -1])/xstep
-    tmp2 = (u[i, -1, -2] + u_last1[-1, -1] - u_last1[-1, -2])/ystep
-    tmp3 = -3/2*(u[i, -1, -1] - 2*u_last1[-1, -1] + u_last2[-1, -1])/tstep
-    u[i, -1, -1] = (tmp1 + tmp2 + tmp3)/(1/xstep + 1/ystep)
-
+    # ## x = 2   y = 2
+    # tmp1 = (u[i, -2, -1] - u_last1[-2, -1] + u_last1[-1, -1])/xstep
+    # tmp2 = (u[i, -1, -2] + u_last1[-1, -1] - u_last1[-1, -2])/ystep
+    # tmp3 = -3/2*(u[i, -1, -1] - 2*u_last1[-1, -1] + u_last2[-1, -1])/tstep
+    # u[i, -1, -1] = (tmp1 + tmp2 + tmp3)/(1/xstep + 1/ystep)
+    
+    u[i, 0, -1] = (u[i, 1, -1] + u[i, 0, -2])/2
+    u[i, -1, -1] = (u[i, -1, -2] + u[i, -2, -1])/2
 ## plot
 
 # import matplotlib.pyplot as plt
@@ -124,23 +126,22 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation   
 fig, ax = plt.subplots()
 # u_tmp =u[0, :, 0:ynum//2]
-u_tmp = u[75]
-print(u_tmp[-1, -1])
-img = plt.imshow(u_tmp)
 
-nums = int(1/tstep)   
+img = plt.imshow(u[-1])
 
-def init():
-    ax.set_xlim(-2, 2)
-    ax.set_ylim(-2, 2)
-    return img
+# nums = int(1/tstep)   
 
-def update(step):
-    z = u[step :, 0:ynum//2]
-    img.set_data(z) 
-    return img
+# def init():
+#     ax.set_xlim(-2, 2)
+#     ax.set_ylim(-2, 2)
+#     return img
 
-ani = FuncAnimation(fig, update, frames=nums, init_func=init,interval=5e3//nums)
+# def update(step):
+#     z = u[step]
+#     img.set_data(z) 
+#     return img
+
+# ani = FuncAnimation(fig, update, frames=range(nums), init_func=init,interval=5e3//nums)
 plt.show()
 
 
