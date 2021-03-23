@@ -15,7 +15,7 @@ t = np.linspace(0, T, tnum)
 
 delta = 5e-1
 X = 2
-xstep = 1e-2
+xstep = 1e-1
 xnum = int(1+2*X/xstep)
 x = np.linspace(-X, X, xnum)
 
@@ -88,17 +88,54 @@ for i in range(2, tnum):
     tmp3 = np.diff(u_last1[:, -1], n=2)/(xstep**2)
     u[i, 1:-1, -1] = (tmp1+tmp2+tmp3)/(1/tstep**2+1/(ystep*tstep))
 
-    u[i, 0, -1] = 0
-    u[i, -1, -1] = 0
+    tmp1 = (u[i, 0, -2] + u_last1[0, -1] - u_last1[0, -2])/(ystep*tstep)
+    tmp2 = (-u[i,  1, -1] + u_last1[1, -1] - u_last1[0, -1])/(xstep*tstep)
+    tmp3 = -3/2*(u[i, 0, -1] - 2*u_last1[0, -1] + u_last2[0, -1])/(tstep**2)
+    u[i, 0, -1] = (tmp1 + tmp2 + tmp3)/((1/tstep)*(-1/xstep + 1/ystep))
+
+    tmp1 = (u[i, -2, -1] + u_last1[-1, -1] - u_last1[-2, -1])/(xstep*tstep)
+    tmp2 = (-u[i, -1, -2] - u_last1[-1, -1] + u_last1[-2, -1])/(ystep*tstep)
+    tmp3 = 3/2*(u[i, -1, -1] - 2*u_last1[-1, -1] + u_last2[-1, -1])/(tstep**2)
+    u[i, -1, -1] = (tmp1 + tmp2 + tmp3)/((1/tstep)*(1/xstep - 1/ystep))
+
+## plot
+
+# import matplotlib.pyplot as plt
+# fig=plt.figure()
+# ax=fig.add_subplot(1,1,1)
+# ax.set_xlabel('x')
+# ax.set_ylabel('u')
+# ax.set_title('wave')
+# for i in range(1000):
+#     obsX = x
+#     obsY = u[i,:]
+#     ax.plot(obsX,obsY,c='b')
+#     ax.view_init(azim=0, elev=90)
+#     plt.pause(0.01)
 
 
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation   #导入负责绘制动画的接口
+fig, ax = plt.subplots() 
+img = plt.imshow(u[0])
+nums = int(1/tstep)   #需要的帧数
 
 
+def init():
+    ax.set_xlim(-2, 2)
+    ax.set_ylim(-2, 2)
+    return img
 
+def update(step):
+    # z = np.cos((0.5*X*(np.cos(0.01*step)+0.1))+step)+np.sin(0.5*(Y*(np.sin(0.01*step)+0.1))+step)
+    z = u[step]
+    img.set_data(z) #设置新的 x，y
+    return img
 
-
-
-
+ani = FuncAnimation(fig, update, frames=nums,     #nums输入到frames后会使用range(nums)得到一系列step输入到update中去
+                    init_func=init,interval=5e3//nums)
+plt.show()
 
 
 
