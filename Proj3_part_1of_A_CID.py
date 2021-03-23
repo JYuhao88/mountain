@@ -20,7 +20,7 @@ x = np.linspace(-X, X, xnum)
 
 ## initial
 c = 4
-nu = c*tstep*xstep
+nu = c*tstep/xstep
 u = np.empty((tnum, xnum))
 delta_in = (abs(x)<=delta)
 delta_out = ~delta_in
@@ -41,35 +41,23 @@ for i in range(2, tnum):
     u[i, 1:-1] = ((tstep**2)*(c**2)*(diff)/(xstep**2)) \
         + 2*u_last1[1:-1] - u_last2[1:-1]
     
-    ## Neumann  boundary
-    u[i, 0] = (c/xstep*u[i, 1] + u_last1[0]/tstep)/(1/tstep+c/xstep)
-    u[i, -1] =  (-(u[i, -2]-u_last1[-2])/tstep + c*u_last1[-2])/(c/xstep)
+    ## boundary
+    ## a
+    u[i, 0] = (c*u[i, 1]/xstep + u_last1[0]/tstep)/(c/xstep + 1/tstep)
+    u[i, -1] =  (c*u[i, -2]/xstep + u_last1[-1]/tstep)/(c/xstep + 1/tstep)
     
-    # ## dirichlet  boundary
+    # b
     # u[i, 0] = 0
     # u[i, -1] = 0
 
 ## plot
-# import matplotlib.pyplot as plt
-# fig=plt.figure()
-# ax=fig.add_subplot(1,1,1)
-# ax.set_xlabel('x')
-# ax.set_ylabel('u')
-# ax.set_title('wave')
-# for i in range(1000):
-#     obsX = x
-#     obsY = u[i,:]
-#     ax.plot(obsX,obsY,c='b')
-#     plt.pause(0.01)
-
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation   #导入负责绘制动画的接口
-#其中需要输入一个更新数据的函数来为fig提供新的绘图信息
+from matplotlib.animation import FuncAnimation   
 
 fig, ax = plt.subplots() 
 line, = plt.plot([], [], '.-',color='green')
-nums = int(1/tstep)   #需要的帧数
+nums = int(1/tstep)   
 
 def init():
     ax.set_xlim(-2, 2)
@@ -77,11 +65,11 @@ def init():
     return line
 
 def update(step):
-    y =  u[step, :] #这里只改变相位
-    line.set_data(x, y) #设置新的 x，y
+    y =  u[step, :] 
+    line.set_data(x, y) 
     return line
 
-ani = FuncAnimation(fig, update, frames=nums,     #nums输入到frames后会使用range(nums)得到一系列step输入到update中去
+ani = FuncAnimation(fig, update, frames=nums, \
                     init_func=init,interval=5e3//nums)
 plt.show()
 
