@@ -50,8 +50,12 @@ $u_t = 0$ when $t=0$
     U_{N+1}^{j} = U_{N-1}^j + \frac{1}{q} (U_N^{j+1}-U_N^{j-1}) \\
 \end{align*}
 \begin{align*}
-    \frac{U_0^{j+1}-U_0^j+U_0^{j-1}}{k^2} = c^2 \frac{2(U_1^j -U_0^j) -(U_0^{j+1} -U_0^{j-1})/q}{h^2} \\
+    \frac{U_0^{j+1}-2U_0^j+U_0^{j-1}}{k^2} = c^2 \frac{2(U_1^j -U_0^j) -(U_0^{j+1} -U_0^{j-1})/q}{h^2} \\
     \frac{U_{N}^{j+1}-2U_N^j+U_N^{j-1}}{k^2} = c^2 \frac{2(U_{N-1}^j - U_N^j) + (U_N^{j+1} - U_N^{j-1})/q}{h^2}
+\end{align*}
+\begin{align*}
+    Tu(0, t) = \frac{c}{3} (ch u_{xxx}(0, t) - \frac{k}{h}u_{ttt}(0, t))
+    Tu(N, t) = \frac{c}{3} (-ch u_{xxx}(0, t) + \frac{k}{h}u_{ttt}(0, t))
 \end{align*}
 
 \begin{align*}
