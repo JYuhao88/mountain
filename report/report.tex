@@ -1,0 +1,115 @@
+\documentclass[en,hazy,screen,blue,normal]{elegantnote}
+
+\title{report}
+
+\author{name}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\section{A}
+\begin{align*}
+    u_{tt} = c^2 u_{xx}
+\end{align*}
+
+\begin{align}
+    \frac{U_n^{j+1} - 2U_n^j + U_n^{j-1}}{k^2} = c^2 \frac{(U_{n+1}^j - 2U_n^j + U_{n-1}^j)}{h^2}
+\end{align}
+\begin{align*}
+    T_{(h,k)} &= \biggl(\frac{\delta_t^2}{k} - \frac{\delta_x^2}{h}\biggr) - \biggl(\frac{\partial^2}{\partial t^2} - \frac{\partial^2}{\partial x^2}\biggr) \\
+    Tu(x, t) &= \frac{1}{12} u_{tttt}(x, t) k^2 - \frac{1}{12} u_{xxxx}(x, t) h^2 + O(k^4 + h^4)
+\end{align*}
+
+
+let $q = \frac{ck}{h}$
+\begin{align*}
+    u(x, k) &= u(x, 0) + k u_t(x, 0) + \frac{1}{2} q^2 u_{tt}(x, 0) + O(k^3) \\
+    &= u^0(x) + k v^0(x) + \frac{1}{2} q^2(u^0(x+h) - 2u^0(x) + u^0(x-h)) + O(k^3+k^2 h^2)
+\end{align*}
+$Tu(x, k) = O(k^3 + k^2h)$
+
+$u_t = 0$ when $t=0$
+\begin{align*}
+    U_n^1 = U_n^0 + \frac{1}{2} q^2 (U_{n+1}^0 - 2U_{n}^0 + U_{n-1}^0)
+\end{align*}
+
+\subsection{(a)}
+\begin{align*}
+    c u_x &= + u_t \quad x=-2 \\
+    c u_x &= - u_t \quad x=2
+\end{align*}
+\begin{align*}
+    q (U_1^j - U_{-1}^j) = U_0^{j+1} - U_0^{j-1} \\
+    q (U_{N+1}^j - U_{N-1}^j) = U_N^{j+1} - U_N^{j-1}
+\end{align*}
+
+\begin{align*}
+    U_{-1}^{j} = U_1^j - \frac{1}{q} (U_0^{j+1}-U_0^{j-1}) \\
+    U_{N+1}^{j} = U_{N-1}^j + \frac{1}{q} (U_N^{j+1}-U_N^{j-1}) \\
+\end{align*}
+\begin{align*}
+    \frac{U_0^{j+1}-U_0^j+U_0^{j-1}}{k^2} = c^2 \frac{2(U_1^j -U_0^j) -(U_0^{j+1} -U_0^{j-1})/q}{h^2} \\
+    \frac{U_{N}^{j+1}-2U_N^j+U_N^{j-1}}{k^2} = c^2 \frac{2(U_{N-1}^j - U_N^j) + (U_N^{j+1} - U_N^{j-1})/q}{h^2}
+\end{align*}
+
+\begin{align*}
+    U_0^{j+1} = \frac{1}{1+q} [2U_0^j -(1-q)U_0^{j-1} + 2q^2(U_1^j - U_0^j)] \\
+    U_N^{j+1} = \frac{1}{1-q} [2U_N^{j+1} -(1-q)U_{N}^{j-1} + 2q^2 (U_{N-1}^j - U_{N}^j)]
+\end{align*}
+
+
+
+\subsection{(b)}
+$u(-2, t) = u(2, t) = 0$ \\
+$U_0^m = U_N^m = 0$
+
+
+
+\section{B}
+formula
+\begin{align*}
+    u_{tt} = \nabla^2 u = u_{xx} + u_{yy}
+\end{align*}
+
+\begin{align*}
+    \frac{U_{mn}^{j+1}-2U_{mn}^{j}+U_{mn}^{j-1}}{k^2}
+    = \frac{1}{h_x^2} \delta_{x}^2 U_{mn}^{j} + \frac{1}{h_y^2} \delta_{y}^2 U_{mn}^{j}
+\end{align*}
+
+\subsection{(a)}
+$y=2$
+\begin{align*}
+    -u_{yt} = u_{tt} - \frac{1}{2} u_{xx}
+\end{align*}
+
+\begin{align*}
+    - \biggl(\frac{U_{m, N}^{j+1} - U_{m, N-1}^{j+1}}{h_y} - \frac{U_{m, N}^j - U_{m, N-1}^j}{h_y}\biggr)/k = \frac{U_{m,N}^{k+1} - 2U_{m,N}^{k} + U_{m,N-1}{k}}{k^2} - \frac{1}{2} \frac{U_{m+1, N}^{j} - 2U_{m,N}^j + U_{m-1, N}^j}{h_y^2} \\
+    U_{m, N}^{j+1} = \biggl(\frac{U_{m, N-1} + U_{m,N}^j - U_{m, N-1}^j}{k h_y} + \frac{2U_{m,N}^j - U_{m, N}^{j-1}}{k^2} + \frac{U_{m+1, N}^j - 2U_{m, N}^j + U_{m-1, N}^j}{2h_x^2} \biggr)/(\frac{1}{k^2} + \frac{1}{h_y^2})
+\end{align*}
+
+$x=-2$ and $y>0$
+\begin{align*}
+    u_{xt} = u_{tt} - \frac{1}{2} u_{yy}
+\end{align*}
+\begin{align*}
+    \biggl(\frac{U_{1, n}^{j+1} - U_{0, n}^{j+1}}{h_x} - \frac{U_{1, n}^{j} - U_{0, n}^{j}}{h_x}\biggr)/k
+    = \frac{U_{0, n}^{j+1} - 2U_{0, n}^j + U_{0, n}^{j-1}}{k^2} - \frac{U_{0, n+1}^j - 2U_{0, n}^j + U_{0, n-1}^j}{2 h_y^2} \\
+    U_{0, n}^{j+1} = \frac{U_{1, n}^{j+1} - U_{1, n}^{j} + U_{0, n}^j}{k h_x} + \frac{2 U_{0, n}^{j} - U_{0, n}^{j-1}}{k^2} + \frac{U_{0, n+1}^{j} - 2U_{0, n}^j + U_{0, n-1}^j}{2h_y^2}
+\end{align*}
+
+$x = 2$ and $y>0$
+\begin{align*}
+    - u_{xt} = u_{tt} - \frac{1}{2} u_{yy}
+\end{align*}
+\begin{align*}
+    - \biggl(\frac{U_{M, n}^{j+1} - U_{M-1, n}^{j+1}}{h_x} - \frac{U_{M, n}^{j} - U_{M-1, n}^{j}}{h_x}\biggr)/k
+    = \frac{U_{M, n}^{j+1} -2U_{M, n}^j + U_{M, n}^{j-1}}{k^2} -\frac{U_{M, n+1}^j - 2U_{M, n}^j + U_{M, n-1}^j}{2h_y^2} \\
+    U_{M, n}^{j+1} = \biggl(\frac{U_{M-1, n}^{j+1} +U_{M, n}^j -U_{M-1, n}^j}{k h_x} + \frac{2U_{M, n}^j}{k^2} + \frac{U_{M, n+1}^j - 2U_{M, n}^j + U_{M, n-1}^j}{2h_y^2}\biggr)/(\frac{1}{k^2} + \frac{1}{k h_x})
+\end{align*}
+
+
+
+\subsection{(b)}
+\end{document}
