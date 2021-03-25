@@ -63,12 +63,9 @@ $u_t = 0$ when $t=0$
     U_N^{j+1} = \frac{1}{1-q} [2U_N^{j+1} -(1-q)U_{N}^{j-1} + 2q^2 (U_{N-1}^j - U_{N}^j)]
 \end{align*}
 
-
-
 \subsection{(b)}
 $u(-2, t) = u(2, t) = 0$ \\
 $U_0^m = U_N^m = 0$
-
 
 
 \section{B}
@@ -81,6 +78,10 @@ formula
     \frac{U_{mn}^{j+1}-2U_{mn}^{j}+U_{mn}^{j-1}}{k^2}
     = \frac{1}{h_x^2} \delta_{x}^2 U_{mn}^{j} + \frac{1}{h_y^2} \delta_{y}^2 U_{mn}^{j}
 \end{align*}
+\begin{align*}
+    T_{(h_x, h_y, k)} &= \biggl(\frac{\delta_t^2}{k} - \frac{\delta_x^2}{h_x} - \frac{\delta_y^2}{h_y}\biggr) - \biggl(\frac{\partial^2}{\partial t^2} - \frac{\partial^2}{\partial x^2} - \frac{\partial^2}{\partial y^2}\biggr) \\
+    Tu(x, y, t) &= \frac{1}{12} u_{tttt}(x, y, t) k^2 - \frac{1}{12} u_{xxxx}(x, y, t) h_x^2 - \frac{1}{12} u_{yyyy}(x, y, t) h_y^2  + O(k^4 + h^4)
+\end{align*}
 
 \subsection{(a)}
 $y=2$
@@ -89,8 +90,9 @@ $y=2$
 \end{align*}
 
 \begin{align*}
-    - \biggl(\frac{U_{m, N}^{j+1} - U_{m, N-1}^{j+1}}{h_y} - \frac{U_{m, N}^j - U_{m, N-1}^j}{h_y}\biggr)/k = \frac{U_{m,N}^{k+1} - 2U_{m,N}^{k} + U_{m,N-1}{k}}{k^2} - \frac{1}{2} \frac{U_{m+1, N}^{j} - 2U_{m,N}^j + U_{m-1, N}^j}{h_y^2} \\
-    U_{m, N}^{j+1} = \biggl(\frac{U_{m, N-1} + U_{m,N}^j - U_{m, N-1}^j}{k h_y} + \frac{2U_{m,N}^j - U_{m, N}^{j-1}}{k^2} + \frac{U_{m+1, N}^j - 2U_{m, N}^j + U_{m-1, N}^j}{2h_x^2} \biggr)/(\frac{1}{k^2} + \frac{1}{h_y^2})
+    - \biggl(\frac{U_{m, N}^{j+1} - U_{m, N-1}^{j+1}}{h_y} - \frac{U_{m, N}^j - U_{m, N-1}^j}{h_y}\biggr)/k 
+    = \frac{U_{m,N}^{j+1} - 2U_{m,N}^{j} + U_{m,N-1}^{j-1}}{k^2} -  \frac{U_{m+1, N}^{j} - 2U_{m,N}^j + U_{m-1, N}^j}{2h_x^2} \\
+    U_{m, N}^{j+1} = \biggl(\frac{U_{m, N-1} + U_{m,N}^j - U_{m, N-1}^j}{k h_y} + \frac{2U_{m,N}^j - U_{m, N}^{j-1}}{k^2} + \frac{U_{m+1, N}^j - 2U_{m, N}^j + U_{m-1, N}^j}{2h_x^2} \biggr)/(\frac{1}{k^2} + \frac{1}{kh_y})
 \end{align*}
 
 $x=-2$ and $y>0$
@@ -100,7 +102,7 @@ $x=-2$ and $y>0$
 \begin{align*}
     \biggl(\frac{U_{1, n}^{j+1} - U_{0, n}^{j+1}}{h_x} - \frac{U_{1, n}^{j} - U_{0, n}^{j}}{h_x}\biggr)/k
     = \frac{U_{0, n}^{j+1} - 2U_{0, n}^j + U_{0, n}^{j-1}}{k^2} - \frac{U_{0, n+1}^j - 2U_{0, n}^j + U_{0, n-1}^j}{2 h_y^2} \\
-    U_{0, n}^{j+1} = \frac{U_{1, n}^{j+1} - U_{1, n}^{j} + U_{0, n}^j}{k h_x} + \frac{2 U_{0, n}^{j} - U_{0, n}^{j-1}}{k^2} + \frac{U_{0, n+1}^{j} - 2U_{0, n}^j + U_{0, n-1}^j}{2h_y^2}
+    U_{0, n}^{j+1} = \biggl(\frac{U_{1, n}^{j+1} - U_{1, n}^{j} + U_{0, n}^j}{k h_x} + \frac{2 U_{0, n}^{j} - U_{0, n}^{j-1}}{k^2} + \frac{U_{0, n+1}^{j} - 2U_{0, n}^j + U_{0, n-1}^j}{2h_y^2}\biggr)/(\frac{1}{k^2} + \frac{1}{kh_x})
 \end{align*}
 
 $x = 2$ and $y>0$
